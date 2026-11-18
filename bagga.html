@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bagga School - HTML5 & CSS3 Interactive Tutorials</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #1f2937;
+      background-color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    code, pre, textarea.code-editor {
+      font-family: 'Fira Code', monospace;
+    }
+
+    #main-scroll {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #04AA6D;
+    }
+
+    .w3-green {
+      background-color: #04AA6D;
+    }
+    .w3-green:hover {
+      background-color: #059862;
+    }
+    .w3-text-green {
+      color: #04AA6D;
+    }
+    .w3-sidebar-active {
+      background-color: #04AA6D !important;
+      color: #ffffff !important;
+      font-weight: 600;
+    }
+    .w3-example-box {
+      background-color: #E7E9EB;
+      border-radius: 5px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .w3-code-box {
+      background-color: #ffffff;
+      border-left: 4px solid #04AA6D;
+      padding: 12px 16px;
+      margin: 12px 0;
+      overflow-x: auto;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .w3-note {
+      background-color: #ffffcc;
+      border-left: 6px solid #ffeb3b;
+      padding: 14px 18px;
+      margin: 20px 0;
+    }
+    .w3-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    .w3-table th {
+      background-color: #04AA6D;
+      color: white;
+      text-align: left;
+      padding: 10px 12px;
+    }
+    .w3-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #ddd;
+    }
+    .w3-table tr:nth-child(even) {
+      background-color: #f3f4f6;
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+
+  <!-- Top Navigation Bar -->
+  <header class="bg-[#282A35] text-white shadow-md z-30 flex-shrink-0">
+    <div class="flex items-center justify-between px-4 h-14">
+      <div class="flex items-center space-x-2 md:space-x-4 h-full">
+        <button id="mobile-menu-btn" onclick="toggleSidebar()" class="lg:hidden p-2 rounded hover:bg-gray-700 focus:outline-none" aria-label="Toggle Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+
+        <a href="#" onclick="loadTopic('html-home'); return false;" class="flex items-center space-x-2 font-extrabold text-xl tracking-tight">
+          <span class="bg-[#04AA6D] text-white px-2.5 py-0.5 rounded font-black text-2xl">B</span>
+          <span>Bagga<span class="text-[#04AA6D]">School</span></span>
+        </a>
+
+        <nav class="hidden sm:flex h-full items-center ml-4">
+          <button id="tab-html" onclick="switchCategory('HTML')" class="h-full px-4 font-bold text-sm tracking-wide uppercase transition bg-[#04AA6D] text-white">
+            HTML
+          </button>
+          <button id="tab-css" onclick="switchCategory('CSS')" class="h-full px-4 font-bold text-sm tracking-wide uppercase transition hover:bg-black text-gray-200">
+            CSS
+          </button>
+          <button id="tab-ref" onclick="openReferenceView()" class="h-full px-4 font-bold text-sm tracking-wide uppercase transition hover:bg-black text-gray-200">
+            References
+          </button>
+          <button id="tab-quiz" onclick="openQuizView()" class="h-full px-4 font-bold text-sm tracking-wide uppercase transition hover:bg-black text-gray-200">
+            Quiz
+          </button>
+        </nav>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <div class="relative hidden md:block">
+          <input
+            type="text"
+            id="topic-search"
+            oninput="filterSidebar(this.value)"
+            placeholder="Search tutorials (e.g. Flexbox, Forms)..."
+            class="bg-white text-gray-800 text-sm rounded-full pl-4 pr-9 py-1.5 w-64 focus:outline-none focus:ring-2 focus:ring-[#04AA6D]"
+          />
+          <svg class="w-4 h-4 text-gray-500 absolute right-3 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+
+        <div class="flex items-center bg-gray-800 px-3 py-1 rounded-full text-xs font-semibold border border-gray-700" title="Completed Lessons">
+          <span class="w-2 h-2 rounded-full bg-[#04AA6D] mr-2"></span>
+          <span id="progress-counter">0 / 26 Done</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex sm:hidden bg-[#1d1e26] border-t border-gray-700 text-xs font-bold uppercase">
+      <button onclick="switchCategory('HTML')" class="flex-1 py-2.5 text-center hover:bg-black border-r border-gray-700">HTML</button>
+      <button onclick="switchCategory('CSS')" class="flex-1 py-2.5 text-center hover:bg-black border-r border-gray-700">CSS</button>
+      <button onclick="openReferenceView()" class="flex-1 py-2.5 text-center hover:bg-black border-r border-gray-700">Refs</button>
+      <button onclick="openQuizView()" class="flex-1 py-2.5 text-center hover:bg-black">Quiz</button>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <div class="flex flex-1 overflow-hidden relative">
+
+    <!-- Left Sidebar -->
+    <aside id="sidebar" class="w-64 bg-[#E7E9EB] border-r border-gray-300 overflow-y-auto flex-shrink-0 transition-transform duration-200 ease-in-out fixed lg:static inset-y-0 left-0 top-14 lg:top-0 z-20 -translate-x-full lg:translate-x-0">
+      <div class="p-3 lg:hidden">
+        <input
+          type="text"
+          oninput="filterSidebar(this.value)"
+          placeholder="Filter topics..."
+          class="w-full bg-white text-sm rounded px-3 py-1.5 border border-gray-300 focus:outline-none focus:border-[#04AA6D]"
+        />
+      </div>
+      <div id="sidebar-content" class="pb-12"></div>
+    </aside>
+
+    <!-- Backdrop for mobile sidebar -->
+    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden lg:hidden"></div>
+
+    <!-- Main Content Area -->
+    <main id="main-scroll" class="flex-1 overflow-y-auto bg-white">
+      <div class="max-w-5xl mx-auto px-5 sm:px-10 py-8">
+        <div id="lesson-container"></div>
+
+        <footer class="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500 pb-8">
+          <p class="font-semibold text-gray-700">Bagga School — Interactive Web Development Tutorials</p>
+          <p class="mt-1">Learn HTML5 & CSS3 step-by-step with live runnable examples and interactive exercises.</p>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <!-- Try It Yourself Modal -->
+  <div id="tryit-modal" class="fixed inset-0 bg-gray-900 z-50 hidden flex-col">
+    <div class="bg-[#E7E9EB] border-b border-gray-300 px-4 py-2 flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center space-x-3">
+        <button onclick="closeTryIt()" class="bg-gray-700 hover:bg-gray-800 text-white px-3 py-1.5 rounded text-sm font-semibold flex items-center">
+          &larr; Back to Lesson
+        </button>
+        <button onclick="runTryItCode()" class="w3-green text-white px-5 py-1.5 rounded text-sm font-bold shadow flex items-center space-x-1">
+          <span>Run &#10095;</span>
+        </button>
+        <button onclick="resetTryItCode()" class="bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-3 py-1.5 rounded text-sm font-semibold">
+          Reset
+        </button>
+        <button onclick="toggleTryItOrientation()" class="hidden md:inline-flex bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-3 py-1.5 rounded text-sm font-semibold">
+          Rotate Layout
+        </button>
+      </div>
+      <div class="text-sm font-bold text-gray-700">
+        Bagga School Tryit Editor <span id="tryit-title" class="text-[#04AA6D] ml-1"></span>
+      </div>
+    </div>
+
+    <div id="tryit-panes" class="flex-1 flex flex-col md:flex-row overflow-hidden bg-[#E7E9EB] p-2 gap-2">
+      <div class="flex-1 flex flex-col bg-white rounded shadow overflow-hidden">
+        <div class="bg-gray-100 px-3 py-1 text-xs font-bold uppercase text-gray-500 border-b flex justify-between">
+          <span>Source Code (HTML / CSS)</span>
+          <span>Edit & Click Run</span>
+        </div>
+        <textarea id="tryit-textarea" spellcheck="false" class="code-editor flex-1 w-full p-4 text-sm text-gray-900 focus:outline-none resize-none leading-relaxed"></textarea>
+      </div>
+
+      <div class="flex-1 flex flex-col bg-white rounded shadow overflow-hidden">
+        <div class="bg-gray-100 px-3 py-1 text-xs font-bold uppercase text-gray-500 border-b flex justify-between">
+          <span>Result Preview</span>
+          <span class="text-[#04AA6D]">Live Output</span>
+        </div>
+        <iframe id="tryit-iframe" class="flex-1 w-full bg-white border-0" title="Live Code Output"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
